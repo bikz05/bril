@@ -13,33 +13,33 @@ import sys
 #
 # Added test in `test folder` also.
 
-def dce(verbose=False):
+def dce(instrs):
+    while True:
+        last_def = {}
+        to_remove = set()
+        for idx, instr in enumerate(instrs):
+            if "args" in instr:
+                for arg in instr["args"]:
+                    if arg in last_def:
+                        del last_def[arg]
+            if "dest" in instr:
+                if instr["dest"] in last_def:
+                    to_remove.add(last_def[instr["dest"]])
+                last_def[instr["dest"]] = idx
+        to_remove = to_remove.union(set(last_def.values()))
+        if len(to_remove) == 0:
+            break
+        instrs = [instr for idx, instr in enumerate(instrs) if idx not in to_remove]
+    return instrs
+
+def main(verbose=False):
     prog = json.load(sys.stdin)
     transformed = {"functions": []}
-    last_def = {}
-    to_remove = set()
     for func in prog["functions"]:
-        instrs = func["instrs"]
-        transformed_instrs = instrs
-        while True:
-            for idx, instr in enumerate(transformed_instrs):
-                if "args" in instr:
-                    for arg in instr["args"]:
-                        if arg in last_def:
-                            del last_def[arg]
-                if "dest" in instr:
-                    if instr["dest"] in last_def:
-                        to_remove.add(last_def[instr["dest"]])
-                    last_def[instr["dest"]] = idx
-            to_remove = to_remove.union(set(last_def.values()))
-            if len(to_remove) == 0:
-                break
-            transformed_instrs = [instr for idx, instr in enumerate(transformed_instrs) if idx not in to_remove]
-            to_remove = set()
-            last_def = {}
+        transformed_instrs = dce(func["instrs"])
         transformed_func = {"name": func["name"], "instrs": transformed_instrs}
         transformed["functions"].append(transformed_func)
     print(json.dumps(transformed))
 
 if __name__ == "__main__":
-    dce(False)
+    main(False)
