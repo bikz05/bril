@@ -1,0 +1,10 @@
+@main {
+  a: int = const 4;
+  a: int = const 4;
+  b: int = const 2;
+  c: int = add a b;
+  a: int = const 2;
+  e: int = add c a;
+  print a;
+  print e;
+}
