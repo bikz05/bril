@@ -75,6 +75,13 @@ def get_predecessors(cfg):
                     predecessors_map[child_block_id] = {node.id}
     return predecessors_map
 
+def get_successors(cfg):
+    successors_map = {}
+    for node in cfg:
+        if node.child_block_ids:
+            successors_map[node.id] = set(node.child_block_ids)
+    return successors_map
+
 
 def mycfg():
     prog = json.load(sys.stdin)
@@ -93,6 +100,10 @@ def mycfg():
         predecessors_map = get_predecessors(cfg)
         for node_id, predecessors in predecessors_map.items():
             print("{} : {}".format(node_id, predecessors))
+        print("successors_map")
+        successors_map = get_successors(cfg)
+        for node_id, successors in successors_map.items():
+            print("{} : {}".format(node_id, successors))
 
 
 if __name__ == "__main__":
