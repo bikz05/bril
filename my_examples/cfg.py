@@ -4,7 +4,7 @@ import sys
 TERMINATORS = ("jmp", "br", "ret")
 
 
-# :!bril2json < test/interp/jmp.bril | python3 my_examples/mycfg.py
+# :!bril2json < test/interp/jmp.bril | python3 my_examples/cfg.py
 def form_blocks(body):
     block = []
     for instr in body:
@@ -83,7 +83,7 @@ def get_successors(cfg):
     return successors_map
 
 
-def mycfg():
+def cfg():
     prog = json.load(sys.stdin)
     for func in prog["functions"]:
         blocks = [x for x in form_blocks(func["instrs"])]
@@ -107,4 +107,4 @@ def mycfg():
 
 
 if __name__ == "__main__":
-    mycfg()
+    cfg()

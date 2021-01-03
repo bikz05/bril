@@ -2,7 +2,7 @@ import json
 import sys
 import argparse as ap
 import copy
-from mycfg import *
+from cfg import *
 
 # bril2json < df_1.bril   | python3 ../data_flow_analysis.py -a live
 
