@@ -1,0 +1,21 @@
+# ARGS: live
+
+@main {
+.a:
+    x: int = const 8;
+    y: int = const 2;
+    a: int = const 0;
+
+.b:
+    zero: int = const 0;
+    cond: bool = gt x zero;
+    br cond .c .d;
+.c:
+    a: int = add a y;
+    one: int = const 1;
+    x: int = sub x one;
+    jmp .b;
+.d:
+    z: int = add a y;
+    print z;
+}
