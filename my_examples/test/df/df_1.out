@@ -1,0 +1,12 @@
+b0:
+	in:  \u2205
+	out: i, result
+header:
+	in:  i, result
+	out: i, result
+body:
+	in:  i, result
+	out: i, result
+end:
+	in:  result
+	out: \u2205
